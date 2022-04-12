@@ -12,6 +12,31 @@ int findInTransactions(set<set<int>> trns, set<int> tt)
     }
     return count;
 }
+void printSetNum(set<set<int>> kk, set<set<int>> trns,int n)
+{
+    for (auto i = kk.begin(); i != kk.end(); i++)
+    {
+        set<int> temp1 = *i;
+        if(temp1.size()==n)
+        {for (auto j = temp1.begin(); j != temp1.end(); j++)
+        {
+            cout << *j << " ";
+        }
+        cout << "Counts : " << findInTransactions(trns, temp1) << endl;}
+    }
+}
+void printSet(set<set<int>> kk, set<set<int>> trns)
+{
+    for (auto i = kk.begin(); i != kk.end(); i++)
+    {
+        set<int> temp1 = *i;
+        for (auto j = temp1.begin(); j != temp1.end(); j++)
+        {
+            cout << *j << " ";
+        }
+        cout << "Counts : " << findInTransactions(trns, temp1) << endl;
+    }
+}
 void reduse(set<set<int>> trns, set<set<int>> &kk, int support, int len)
 {
     for (auto i = kk.begin(); i != kk.end(); i++)
@@ -26,20 +51,11 @@ void reduse(set<set<int>> trns, set<set<int>> &kk, int support, int len)
             }
         }
     }
+     
+      cout<<endl;
 }
 
-void printSet(set<set<int>> kk, set<set<int>> trns)
-{
-    for (auto i = kk.begin(); i != kk.end(); i++)
-    {
-        set<int> temp1 = *i;
-        for (auto j = temp1.begin(); j != temp1.end(); j++)
-        {
-            cout << *j << " ";
-        }
-        cout << "Counts : " << findInTransactions(trns, temp1) << endl;
-    }
-}
+
 
 void findPermutations(set<set<int>> &s, int k)
 {
@@ -98,21 +114,34 @@ int main()
         trans.insert(vvv);
         t.push_back(vv);
     }
+
+cout << "Transactions : "<<endl;
+    for(auto i=trans.begin();i != trans.end();i++){
+        set<int> tmp = *i;
+        for(auto j=tmp.begin();j != tmp.end();j++){
+            cout<<*j<<" ";
+        }
+        cout<<endl;
+    }
     int ll = ff.size();
 
     int cl = 0;
     int spll = 2;
     int support;
     cout << "Enter mininmum support : ";
+    // support=2;
     cin >> support;
+    reduse(trans, ff,support, 1);
+    printSetNum(ff, trans,1);
     while (ll != cl)
     {
         cl = ll;
         findPermutations(ff, spll);
-        reduse(trans, ff, spll, support);
+        reduse(trans, ff,support, spll);
+         printSetNum(ff, trans,spll);
         spll++;
         ll = ff.size();
     }
-    printSet(ff, trans);
+    // printSet(ff, trans);
     return 0;
 }
