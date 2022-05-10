@@ -25,6 +25,13 @@ void printSetNum(set<set<int>> kk, set<set<int>> trns,int n)
         cout << "Counts : " << findInTransactions(trns, temp1) << endl;}
     }
 }
+void printSetMan(set<int> s){
+    cout<<"{ ";
+    for(auto i = s.begin(); i != s.end(); i++ ){
+        cout<<*i<<" ";
+    }
+    cout<<"}";
+}
 void printSet(set<set<int>> kk, set<set<int>> trns)
 {
     for (auto i = kk.begin(); i != kk.end(); i++)
@@ -39,14 +46,20 @@ void printSet(set<set<int>> kk, set<set<int>> trns)
 }
 void reduse(set<set<int>> trns, set<set<int>> &kk, int support, int len)
 {
+     
     for (auto i = kk.begin(); i != kk.end(); i++)
     {
+       
         set<int> temp = *i;
         if (temp.size() == len)
         {
             int sp = findInTransactions(trns, temp);
+
             if (sp < support)
             {
+                cout<<"Punning : ";
+                printSetMan(*i);
+                cout<<" Erased"<<endl;
                 kk.erase(i);
             }
         }
@@ -57,7 +70,7 @@ void reduse(set<set<int>> trns, set<set<int>> &kk, int support, int len)
 
 
 
-void findPermutations(set<set<int>> &s, int k)
+void findPermutations(set<set<int>> trns, set<set<int>> &s, int k)
 {
     set<set<int>> kk;
     for (auto i = s.begin(); i != s.end(); i++)
@@ -74,12 +87,25 @@ void findPermutations(set<set<int>> &s, int k)
     {
         for (auto j = kk.begin(); j != kk.end(); j++)
         {
+            cout<<"Joining : ";
             set<int> temp1 = *i;
             set<int> temp2 = *j;
             set<int> hh;
             merge(temp1.begin(), temp1.end(), temp2.begin(), temp2.end(), inserter(hh, hh.begin()));
+            printSetMan(temp1);
+            cout<<"and";
+            printSetMan(temp2);
+
+            cout<<"Counts : "<<findInTransactions(trns,hh);
             if (hh.size() == k)
+            {    
                 s.insert(hh);
+                
+                cout<<" accepted";
+            }
+            
+
+            cout<<endl;
         }
     }
 }
@@ -136,7 +162,7 @@ cout << "Transactions : "<<endl;
     while (ll != cl)
     {
         cl = ll;
-        findPermutations(ff, spll);
+        findPermutations(trans, ff, spll);
         reduse(trans, ff,support, spll);
          printSetNum(ff, trans,spll);
         spll++;
