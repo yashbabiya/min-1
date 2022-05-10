@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
+
+static int sprt_c = 0;
+static int sprt = 0;
 int findInTransactions(set<set<int>> trns, set<int> tt)
 {
     int count = 0;
@@ -73,6 +77,8 @@ void reduse(set<set<int>> trns, set<set<int>> &kk, int support, int len)
 void findPermutations(set<set<int>> trns, set<set<int>> &s, int k)
 {
     set<set<int>> kk;
+
+    map<int,int> mp;
     for (auto i = s.begin(); i != s.end(); i++)
     {
         set<int> temp = *i;
@@ -95,12 +101,16 @@ void findPermutations(set<set<int>> trns, set<set<int>> &s, int k)
             printSetMan(temp1);
             cout<<"and";
             printSetMan(temp2);
-
-            cout<<"Counts : "<<findInTransactions(trns,hh);
+            int y = findInTransactions(trns,hh);
+            cout<<"Counts : "<<y;
+            mp[y]++;
             if (hh.size() == k)
             {    
                 s.insert(hh);
-                
+                if(mp[y]>sprt_c){
+                    sprt_c = mp[y];
+                    sprt = y;
+                }
                 cout<<" accepted";
             }
             
@@ -151,23 +161,19 @@ cout << "Transactions : "<<endl;
     }
     int ll = ff.size();
 
-    int cl = 0;
-    int spll = 2;
-    int support;
-    cout << "Enter mininmum support : ";
-    // support=2;
-    cin >> support;
-    reduse(trans, ff,support, 1);
+    
+   
+    
     printSetNum(ff, trans,1);
-    while (ll != cl)
-    {
-        cl = ll;
-        findPermutations(trans, ff, spll);
-        reduse(trans, ff,support, spll);
-         printSetNum(ff, trans,spll);
-        spll++;
-        ll = ff.size();
-    }
+    
+        
+        findPermutations(trans, ff, 2);
+
+
+        cout<<"Support : "<<sprt<<endl;
+        reduse(trans, ff,sprt, 2);
+         printSetNum(ff, trans,2);
+        
     // printSet(ff, trans);
     return 0;
 }
